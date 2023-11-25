@@ -9,7 +9,7 @@ router.get('/:userId', usersController.getUserDetails);
 router.put('/:userId', usersController.updateUser);
 router.delete('/:userId', usersController.deleteUser);
 
-router.put('/:userId/orders');
+router.put('/:userId/orders', usersController.addUserOrder);
 router.get('/:userId/orders', usersController.getUserOrders);
 router.get('/:userId/orders/total-price', usersController.getTotalPrice);
 

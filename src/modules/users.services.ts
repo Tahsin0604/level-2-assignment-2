@@ -98,8 +98,13 @@ const getUsersOrdersFromDB = async (userId: number) => {
 };
 const getTotalPriceOfOrdersFromDB = async (userId: number) => {
   const userInstance = new userModel();
-  if ((await userInstance.isUserExist(userId)) === null) {
+  const existingUser = await userInstance.isUserExist(userId);
+  if (existingUser === null) {
     throw new Error('User does not exists');
+  }
+
+  if (!existingUser.orders) {
+    throw new Error('No order is placed');
   }
   const result = await userModel.aggregate([
     { $match: { userId } },
