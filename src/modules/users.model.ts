@@ -82,8 +82,7 @@ const userSchema = new Schema<TUser, TUserModel, TUserMethod>(
     },
     orders: {
       type: [orderSchema],
-      required: false,
-      default: () => undefined,
+      default: undefined,
     },
   },
   { versionKey: false },
