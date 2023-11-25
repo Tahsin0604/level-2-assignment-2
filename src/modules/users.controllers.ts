@@ -25,6 +25,7 @@ const getUserDetails = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await usersServices.getUserDetailsFromDB(Number(userId));
+    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
@@ -106,12 +107,32 @@ const deleteUser = async (req: Request, res: Response) => {
 const getUserOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    console.log(req.params);
-    console.log(userId);
     const result = await usersServices.getUsersOrdersFromDB(Number(userId));
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
+      error: {
+        code: 404,
+        description: error instanceof Error ? error.message : 'Error occurred',
+      },
+    });
+  }
+};
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await usersServices.getTotalPriceOfOrdersFromDB(
+      Number(userId),
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
       data: result,
     });
   } catch (error) {
@@ -132,4 +153,5 @@ export const usersController = {
   updateUser,
   deleteUser,
   getUserOrders,
+  getTotalPrice,
 };

@@ -55,8 +55,10 @@ const userSchema = new Schema<TUser, TUserModel, TUserMethod>(
       type: String,
       required: true,
     },
-    fullName: userNameSchema,
-
+    fullName: {
+      type: userNameSchema,
+      required: true,
+    },
     age: {
       type: Number,
       required: true,
@@ -74,8 +76,15 @@ const userSchema = new Schema<TUser, TUserModel, TUserMethod>(
       type: [String],
       required: true,
     },
-    address: addressSchema,
-    orders: [orderSchema],
+    address: {
+      type: addressSchema,
+      required: true,
+    },
+    orders: {
+      type: [orderSchema],
+      required: false,
+      default: () => undefined,
+    },
   },
   { versionKey: false },
 );
@@ -89,4 +98,4 @@ userSchema.methods.isUserExist = async function (userId: number) {
   const existingUser = await userModel.findOne({ userId });
   return existingUser;
 };
-export const userModel = model<TUser, TUserModel>('user', userSchema);
+export const userModel = model<TUser, TUserModel>('userModel', userSchema);

@@ -2,6 +2,7 @@ import { TUser } from './users.interface';
 import { userModel } from './users.model';
 
 const createUserIntoDB = async (userData: TUser) => {
+  console.log(userData);
   const result = await userModel.create(userData);
   const { _id, password, ...restOfResult } = result.toJSON();
   return restOfResult;
@@ -33,7 +34,7 @@ const getUserDetailsFromDB = async (userId: number) => {
       _id: 0,
     },
   );
-  return result;
+  return result[0];
 };
 const updateUserFromDB = async (userId: number, updatePayload: TUser) => {
   const userInstance = new userModel();
@@ -75,7 +76,8 @@ const getUsersOrdersFromDB = async (userId: number) => {
       _id: 0,
     },
   );
-  return result;
+  console.log(result);
+  return result[0];
 };
 const getTotalPriceOfOrdersFromDB = async (userId: number) => {
   const userInstance = new userModel();
@@ -87,12 +89,17 @@ const getTotalPriceOfOrdersFromDB = async (userId: number) => {
     { $unwind: '$orders' },
     {
       $group: {
-        _id: '$orders',
-        totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } },
+        _id: null,
+        totalPrice: {
+          $sum: { $multiply: ['$orders.quantity', '$orders.price'] },
+        },
       },
     },
+    {
+      $project: { totalPrice: 1, _id: 0 },
+    },
   ]);
-  return result;
+  return result[0];
 };
 
 export const usersServices = {
