@@ -87,9 +87,6 @@ const getUsersOrdersFromDB = async (userId: number) => {
   if (existingUser === null) {
     throw new Error('User does not exists');
   }
-  if (!existingUser.orders) {
-    throw new Error('No order is placed');
-  }
   const result = await userModel.find(
     { userId },
     {

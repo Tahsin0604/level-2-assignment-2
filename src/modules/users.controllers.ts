@@ -115,7 +115,7 @@ const addUserOrder = async (req: Request, res: Response) => {
     );
     res.status(200).json({
       success: true,
-      message: 'Order fetched successfully!',
+      message: 'Order created successfully!',
       data: null,
     });
   } catch (error) {
