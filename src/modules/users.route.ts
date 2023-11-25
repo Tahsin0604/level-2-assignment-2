@@ -10,7 +10,7 @@ router.put('/:userId', usersController.updateUser);
 router.delete('/:userId', usersController.deleteUser);
 
 router.put('/:userId/orders');
-router.get('/:userId/orders');
-router.get('/:userId/orders/total-price', usersController.getUserOrders);
+router.get('/:userId/orders', usersController.getUserOrders);
+router.get('/:userId/orders/total-price');
 
 export const userRouter = router;

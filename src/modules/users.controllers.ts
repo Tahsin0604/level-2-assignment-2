@@ -106,6 +106,8 @@ const deleteUser = async (req: Request, res: Response) => {
 const getUserOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
+    console.log(req.params);
+    console.log(userId);
     const result = await usersServices.getUsersOrdersFromDB(Number(userId));
     res.status(200).json({
       success: true,
