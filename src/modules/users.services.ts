@@ -2,7 +2,6 @@ import { TOrder, TUser } from './users.interface';
 import { userModel } from './users.model';
 
 const createUserIntoDB = async (userData: TUser) => {
-  console.log(userData);
   const result = await userModel.create(userData);
   const { _id, password, ...restOfResult } = result.toJSON();
   return restOfResult;
@@ -84,8 +83,12 @@ const addOrderIntoDB = async (userId: number, newOrder: TOrder) => {
 };
 const getUsersOrdersFromDB = async (userId: number) => {
   const userInstance = new userModel();
-  if ((await userInstance.isUserExist(userId)) === null) {
+  const existingUser = await userInstance.isUserExist(userId);
+  if (existingUser === null) {
     throw new Error('User does not exists');
+  }
+  if (!existingUser.orders) {
+    throw new Error('No order is placed');
   }
   const result = await userModel.find(
     { userId },
@@ -94,7 +97,7 @@ const getUsersOrdersFromDB = async (userId: number) => {
       _id: 0,
     },
   );
-  console.log(result);
+
   return result[0];
 };
 const getTotalPriceOfOrdersFromDB = async (userId: number) => {

@@ -25,7 +25,6 @@ const getUserDetails = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await usersServices.getUserDetailsFromDB(Number(userId));
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
@@ -117,7 +116,7 @@ const addUserOrder = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',
-      data: result,
+      data: null,
     });
   } catch (error) {
     res.status(500).json({
