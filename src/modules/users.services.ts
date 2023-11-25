@@ -57,10 +57,11 @@ const updateUserFromDB = async (userId: number, updatePayload: TUser) => {
 };
 const deleteUserFromDB = async (userId: number) => {
   const userInstance = new userModel();
-  if ((await userInstance.isUserExist(userId)) === null) {
+  const existingUser = await userInstance.isUserExist(userId);
+  if (existingUser === null) {
     throw new Error('User does not exists');
   }
-  const result = await userInstance.deleteOne({ userId });
+  const result = await userModel.deleteOne({ userId: Number(userId) });
   return result;
 };
 const addOrderIntoDB = async (userId: number, newOrder: TOrder) => {
