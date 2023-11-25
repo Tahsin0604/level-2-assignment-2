@@ -1,5 +1,14 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TOrder, TUser, TUserName } from './users.interface';
+import bcrypt from 'bcrypt';
+import {
+  TAddress,
+  TOrder,
+  TUser,
+  TUserMethod,
+  TUserModel,
+  TUserName,
+} from './users.interface';
+import config from '../app/config';
 
 const userNameSchema = new Schema<TUserName>(
   {
@@ -30,7 +39,7 @@ const orderSchema = new Schema<TOrder>({
   quantity: { type: Number, required: true },
 });
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, TUserModel, TUserMethod>(
   {
     userId: {
       type: Number,
@@ -59,6 +68,7 @@ const userSchema = new Schema<TUser>(
     isActive: {
       type: Boolean,
       required: true,
+      default: true,
     },
     hobbies: {
       type: [String],
@@ -69,5 +79,14 @@ const userSchema = new Schema<TUser>(
   },
   { versionKey: false },
 );
+userSchema.pre('save', async function (next) {
+  const user: TUser = this as TUser;
+  user.password = await bcrypt.hash(user.password, Number(config.bcryptSalt));
+  next();
+});
 
-export const userModel = model<TUser>('user', userSchema);
+userSchema.methods.isUserExist = async function (userId: number) {
+  const existingUser = await userModel.findOne({ userId });
+  return existingUser;
+};
+export const userModel = model<TUser, TUserModel>('user', userSchema);

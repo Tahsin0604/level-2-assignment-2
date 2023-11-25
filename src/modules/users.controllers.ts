@@ -5,6 +5,7 @@ import { usersServices } from './users.services';
 const createUser = async (req: Request, res: Response) => {
   try {
     const { user: userData } = req.body;
+
     const zodParseData = userValidation.parse(userData);
     const result = await usersServices.createUserIntoDB(zodParseData);
     res.status(200).json({
@@ -15,11 +16,27 @@ const createUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error instanceof Error ? error.message : 'Something went wrong',
+      message: 'Error Occurred',
+      error: error,
+    });
+  }
+};
+const getUserDetails = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await usersServices.getUserDetailsFromDB(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
       error: {
         code: 404,
-        description: 'Users not found!',
-        error,
+        description: error instanceof Error ? error.message : 'Error occurred',
       },
     });
   }
@@ -40,4 +57,77 @@ const getAllUsers = async (req: Request, res: Response) => {
     });
   }
 };
-export const usersController = { createUser, getAllUsers };
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const updatedData = req.body;
+
+    const result = await usersServices.updateUserFromDB(
+      Number(userId),
+      updatedData,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
+      error: {
+        code: 404,
+        description: error instanceof Error ? error.message : 'Error occurred',
+      },
+    });
+  }
+};
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await usersServices.deleteUserFromDB(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
+      error: {
+        code: 404,
+        description: error instanceof Error ? error.message : 'Error occurred',
+      },
+    });
+  }
+};
+const getUserOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await usersServices.getUsersOrdersFromDB(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
+      error: {
+        code: 404,
+        description: error instanceof Error ? error.message : 'Error occurred',
+      },
+    });
+  }
+};
+export const usersController = {
+  createUser,
+  getAllUsers,
+  getUserDetails,
+  updateUser,
+  deleteUser,
+  getUserOrders,
+};

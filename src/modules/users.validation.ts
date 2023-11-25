@@ -35,11 +35,14 @@ const orderValidation = z.object({
 const userValidation = z.object({
   userId: z.number(),
   username: z.string().trim(),
-  password: z.string().trim().min(8, 'Password must be at least 8 characters'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(20, 'Password can not be greater than 20 characters'),
   fullName: userNameValidation,
   age: z.number().positive(),
   email: z.string().email().trim(),
-  isActive: z.boolean(),
+  isActive: z.boolean().default(true),
   hobbies: z.array(z.string().trim()),
   address: addressValidation,
   orders: z.array(orderValidation).optional(),
