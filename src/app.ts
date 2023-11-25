@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use('/api/users', userRouter);
 app.get('/', (req: Request, res: Response) => {
-  res.send(`use /api/users`);
+  res.send(`use -> /api/users`);
 });
 
 export default app;

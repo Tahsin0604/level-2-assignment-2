@@ -9,8 +9,8 @@
     "lint:fix": "npx eslint src --fix",
     "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
     "prettier:fix": "npx prettier --write src",
-    "start:prod": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "start:dev": "node ./dist/server.js"
+    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start:prod": "node ./dist/server.js"
   },
   "keywords": [],
   "author": "",
