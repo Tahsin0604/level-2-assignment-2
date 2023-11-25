@@ -14,18 +14,34 @@ npm run start:prod
 
 ### Use this api to run this application:
 
-#### use http://localhost:5000/api/users to get all users
+#### 1. To get all users use:
 
-#### use http://localhost:5000/api/users to create a single user
+http://localhost:5000/api/users
 
-#### use http://localhost:5000/api/users/:userId to view a single user
+#### 2. To create a single user use:
 
-#### use http://localhost:5000/api/users/:userId to update a single user
+http://localhost:5000/api/users
 
-#### use http://localhost:5000/api/users/:userId to delete a single user
+#### 3. To view a single user use:
 
-#### use http://localhost:5000/api/users/:userId/orders to add add a new order
+http://localhost:5000/api/users/:userId
 
-#### use http://localhost:5000/api/users/:userId/orders to view all orders
+#### 4. To update a single user use:
 
-#### use http://localhost:5000/api/users/:userId/orders/total-price to view total orders price
+http://localhost:5000/api/users/:userId
+
+#### 5. To delete a single user use:
+
+http://localhost:5000/api/users/:userId
+
+#### 6. To add add a new order use:
+
+http://localhost:5000/api/users/:userId/orders
+
+#### 7. To view all orders use:
+
+http://localhost:5000/api/users/:userId/orders
+
+#### 8. To view total orders price use:
+
+http://localhost:5000/api/users/:userId/orders/total-price
