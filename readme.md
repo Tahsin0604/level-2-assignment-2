@@ -2,7 +2,7 @@
 
 #### 1. Install dependencies
 
-npm run install
+npm install
 
 #### 2. to run in development
 
