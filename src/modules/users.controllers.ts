@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import userValidation from './users.validation';
+import { orderValidation, userValidation } from './users.validation';
 import { usersServices } from './users.services';
 
 const createUser = async (req: Request, res: Response) => {
@@ -104,6 +104,32 @@ const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+const addUserOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const order = req.body;
+    const zodParseData = orderValidation.parse(order);
+    const result = await usersServices.addOrderIntoDB(
+      Number(userId),
+      zodParseData,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: true,
+      message: error instanceof Error ? error.message : 'Error occurred',
+      error: {
+        code: 404,
+        description: error instanceof Error ? error.message : 'Error occurred',
+      },
+    });
+  }
+};
 const getUserOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -152,6 +178,7 @@ export const usersController = {
   getUserDetails,
   updateUser,
   deleteUser,
+  addUserOrder,
   getUserOrders,
   getTotalPrice,
 };
