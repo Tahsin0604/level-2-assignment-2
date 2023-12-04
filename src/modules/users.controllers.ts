@@ -4,7 +4,7 @@ import { usersServices } from './users.services';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { user: userData } = req.body;
+    const userData = req.body;
 
     const zodParseData = userValidation.parse(userData);
     const result = await usersServices.createUserIntoDB(zodParseData);
@@ -13,10 +13,10 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Error Occurred',
+      message: error.message || 'Error Occurred',
       error: error,
     });
   }
